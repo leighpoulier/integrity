@@ -4,20 +4,21 @@ set -eu
 
 function usage() {
   echo -e "\nUsage: $0 [-d 256|384|512] file"
-  echo -e "\n\tCalculates and prints an appropriate string for HTML link integrity attribute for the input file"
-  echo -e "\tExpects one or two arguments."
-  echo -e "\n\t-a\tSpecify the digest value.  Allowed values are 256, 384, 512.  Defaults to 512"
-  echo -e "\tIf -a is not given, defaults to 512."
+  echo -e "\nCalculates and prints an appropriate string for HTML link integrity attribute for the input file"
+  echo -e "Expects 1 or 2 arguments."
+  echo -e "\nOptions:"
+  echo -e "  -d, --digest\tSpecify the digest value.  Allowed values are 256, 384, 512.  Defaults to 512."
+  echo -e "  -h, --help\tPrint this help."
 }
 
 
 
-echo "Number of arguments: $#"
 
-if ! [[ $# -eq 2 ]]
+if ! ([[ $# -eq 2 ]] || [[ $# -eq 1 ]])
 then
+  echo -e "Number of arguments: $#.\nExpected 1 or 2."
   usage
 else
-  echo "$# equals 2"
+  echo "Number of arguments: $#"
 fi
 
