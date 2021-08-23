@@ -84,9 +84,13 @@ shift $((OPTIND -1))
 
 log "_DIGEST=$_DIGEST"
 
-echo "Number of arguments: $#"
+log "Number of arguments: $#"
 
 for file in "$@"
 do
-  echo "File: $file"
+  echo -e "\nFile: $file"
+  hash="$(shasum -b -a $_DIGEST "$file" | awk '{print $1}' | xxd -r -p | base64 -w0)"
+  echo "sha${_DIGEST}-${hash}"
+  echo "integrity=\"sha${_DIGEST}-${hash}\""
+  echo "<link rel=\"stylesheet\" href=\"$file\" integrity=\"sha${_DIGEST}-${hash}\">"
 done
