@@ -85,3 +85,8 @@ shift $((OPTIND -1))
 log "_DIGEST=$_DIGEST"
 
 echo "Number of arguments: $#"
+
+for file in "$@"
+do
+  echo "File: $file"
+done
