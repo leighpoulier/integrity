@@ -3,53 +3,25 @@
 set -eu -o pipefail
 
 function usage() {
-  echo -e "\nUsage: $0 [-d 256|384|512] file"
+  echo -e "Usage: $0 [-d 256|384|512] file [file]..."
   echo -e "\nCalculates and prints an appropriate string for HTML link integrity attribute for the input file"
-  echo -e "Expects 1 or 2 arguments."
   echo -e "\nOptions:"
   echo -e "  -d\tSpecify the digest value.  Allowed values are 256, 384, 512.  Defaults to 512."
   echo -e "  -h\tPrint this help."
 }
 
-# UP="\033[1A"      #Move Cursor UP
-# EF="\033[0K"      #Erase Forward
-# GN="\033[01;32m"  #Set Colour Green
-# RD="\033[01;31m"  #Set Colour Red
-# GY="\033[00;36m"  #Set Colour Grey
-# NC="\033[00m"     #Set No Colour
-# WH="\033[01;37m"  #Set Colour White
-newLine=$'\n'
-
+RD="\033[01;31m"
+NC="\033[00m"
 
 _V=0
-# _INDENT=10#0
-# _OLDINDENT=10#0
 function log () {
     if [[ $_V -eq 1 ]]; then
-      # if [[ -n "$_INDENT" ]] && [[ -n "$_OLDINDENT" ]]; then
-      #   if [[ "$_INDENT" -ne "$_OLDINDENT" ]]; then
-      #     echo ""
-      #   fi
-      #   for (( i = 0; i < $_INDENT; i++ )); do
-      #     echo -n "  "
-      #   done
-      # fi
-      # echo -e "${GY}$@${NC}"
       echo -e "$@"
-      _OLDINDENT="$_INDENT"
     fi
 }
 
 allowedDigestValues=("256" "384" "512")
 _DIGEST=512
-
-# if ! ([[ $# -eq 2 ]] || [[ $# -eq 1 ]])
-# then
-#   echo -e "Number of arguments: $#.\nExpected 1 or 2."
-#   usage
-# else
-#   echo "Number of arguments: $#"
-# fi
 
 varsArray=()
 while getopts "vhd:" option
@@ -104,11 +76,18 @@ fi
 log "_DIGEST=$_DIGEST"
 log "Number of arguments: $#"
 
-for file in "$@"
-do
-  echo -e "\nFile: $file"
-  hash="$(shasum -b -a $_DIGEST "$file" | awk '{print $1}' | xxd -r -p | base64 -w0)"
-  echo "sha${_DIGEST}-${hash}"
-  echo "integrity=\"sha${_DIGEST}-${hash}\""
-  echo "<link rel=\"stylesheet\" href=\"$file\" integrity=\"sha${_DIGEST}-${hash}\">"
-done
+if [[ $@ -gt 0 ]]
+then
+  for file in "$@"
+  do
+    echo -e "\nFile: $file"
+    hash="$(shasum -b -a $_DIGEST "$file" | awk '{print $1}' | xxd -r -p | base64 -w0)"
+    echo "sha${_DIGEST}-${hash}"
+    echo "integrity=\"sha${_DIGEST}-${hash}\""
+    echo "<link rel=\"stylesheet\" href=\"$file\" integrity=\"sha${_DIGEST}-${hash}\">"
+  done
+else
+  echo -e "${RD}Error: No file given to create hash${NC}\n"
+  usage
+  exit 1
+fi
