@@ -80,14 +80,28 @@ if [[ $# -gt 0 ]]
 then
   for file in "$@"
   do
-    echo -e "\nFile: $file"
-    hash="$(shasum -b -a $_DIGEST "$file" | awk '{print $1}' | xxd -r -p | base64 -w0)"
-    echo "sha${_DIGEST}-${hash}"
-    echo "integrity=\"sha${_DIGEST}-${hash}\""
-    echo "<link rel=\"stylesheet\" href=\"$file\" integrity=\"sha${_DIGEST}-${hash}\">"
+    if [[ -f "$file" ]]
+    then
+      echo -e "\nFile: $file"
+      hash="$(shasum -b -a $_DIGEST "$file" | awk '{print $1}' | xxd -r -p | base64 -w0)"
+      echo "sha${_DIGEST}-${hash}"
+      echo "integrity=\"sha${_DIGEST}-${hash}\""
+      if [[ "${file##*.}" == "css" ]]
+      then
+        echo "<link rel=\"stylesheet\" type="text/css" href=\"$file\" integrity=\"sha${_DIGEST}-${hash}\">"
+      else
+        if [[ "${file##*.}" == "js" ]]
+        then
+          # echo "<script rel=\"stylesheet\" href=\"$file\" integrity=\"sha${_DIGEST}-${hash}\">"
+          echo "<script type=\"text/javascript\" src=\"$file\" integrity=\"sha${_DIGEST}-${hash}\"></script>"
+        fi
+      fi
+    else
+      echo -e "\n${RD}Error: $file is not a normal file${NC}\n"
+    fi
   done
 else
-  echo -e "${RD}Error: No file given to create hash${NC}\n"
+  echo -e "${RD}Error: No files given to create hash${NC}\n"
   usage
   exit 1
 fi
