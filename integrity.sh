@@ -54,22 +54,26 @@ shift $((OPTIND -1))
 
 if ! command -v shasum &> /dev/null
 then
-    echo "shasum could not be found"
+    echo "${RD}Error: shasum could not be found${NC}"
+    echo "This script requires the following to be installed: shasum awk xxd base64"
     exit 1
 fi
 if ! command -v awk &> /dev/null
 then
-    echo "awk could not be found"
+    echo "${RD}Error: awk could not be found${NC}"
+    echo "This script requires the following to be installed: shasum awk xxd base64"
     exit 1
 fi
 if ! command -v xxd &> /dev/null
 then
-    echo "xxd could not be found"
+    echo "${RD}Error: xxd could not be found${NC}"
+    echo "This script requires the following to be installed: shasum awk xxd base64"
     exit 1
 fi
 if ! command -v base64 &> /dev/null
 then
-    echo "base64 could not be found"
+    echo "${RD}Error: base64 could not be found${NC}"
+    echo "This script requires the following to be installed: shasum awk xxd base64"
     exit 1
 fi
 
