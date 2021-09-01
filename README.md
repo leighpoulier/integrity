@@ -4,7 +4,7 @@ Shell script to automate creating SHA integrity hashes for use in html links.
 
 Only tested on Linux in Bash shell.
 
-Usage:
+## Usage:
 ```bash
 integrity.sh [-d 256|384|512] file [file]...
 
