@@ -76,7 +76,7 @@ fi
 log "_DIGEST=$_DIGEST"
 log "Number of arguments: $#"
 
-if [[ $@ -gt 0 ]]
+if [[ $# -gt 0 ]]
 then
   for file in "$@"
   do
