@@ -84,15 +84,18 @@ then
     then
       echo -e "\nFile: $file"
       hash="$(shasum -b -a $_DIGEST "$file" | awk '{print $1}' | xxd -r -p | base64 -w0)"
+      echo -e "\nBasic hash:"
       echo "sha${_DIGEST}-${hash}"
+      echo -e "\nIntegrity attribute:"
       echo "integrity=\"sha${_DIGEST}-${hash}\""
       if [[ "${file##*.}" == "css" ]]
       then
+        echo -e "\nFull link for css"
         echo "<link rel=\"stylesheet\" type="text/css" href=\"$file\" integrity=\"sha${_DIGEST}-${hash}\">"
       else
         if [[ "${file##*.}" == "js" ]]
         then
-          # echo "<script rel=\"stylesheet\" href=\"$file\" integrity=\"sha${_DIGEST}-${hash}\">"
+          echo -e "\nFull link for js:"
           echo "<script type=\"text/javascript\" src=\"$file\" integrity=\"sha${_DIGEST}-${hash}\"></script>"
         fi
       fi
