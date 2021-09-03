@@ -100,7 +100,7 @@ then
         if [[ "${file##*.}" == "js" ]]
         then
           echo -e "\nFull link for js:"
-          echo "<script type=\"text/javascript\" src=\"$file\" integrity=\"sha${_DIGEST}-${hash}\"></script>"
+          echo "<script src=\"$file\" integrity=\"sha${_DIGEST}-${hash}\"></script>"
         fi
       fi
     else
