@@ -95,7 +95,7 @@ then
       if [[ "${file##*.}" == "css" ]]
       then
         echo -e "\nFull link for css"
-        echo "<link rel=\"stylesheet\" type="text/css" href=\"$file\" integrity=\"sha${_DIGEST}-${hash}\">"
+        echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"$file\" integrity=\"sha${_DIGEST}-${hash}\">"
       else
         if [[ "${file##*.}" == "js" ]]
         then
