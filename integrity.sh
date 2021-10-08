@@ -87,7 +87,7 @@ then
     if [[ -f "$file" ]]
     then
       echo -e "\nFile: $file"
-      hash="$(shasum -b -a $_DIGEST "$file" | awk '{print $1}' | xxd -r -p | base64 -w0)"
+      hash="$(shasum -b -a $_DIGEST "$file" | awk '{print $1}' | xxd -r -p | base64 | tr -d '\r\n')"
       echo -e "\nBasic hash:"
       echo "sha${_DIGEST}-${hash}"
       echo -e "\nIntegrity attribute:"
