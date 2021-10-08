@@ -80,6 +80,7 @@ if ! command -v tr &> /dev/null
 then
     echo "${RD}Error: tr could not be found${NC}"
     echo "This script requires the following to be installed: shasum awk xxd base64 tr"
+    exit 1
 fi
 
 log "_DIGEST=$_DIGEST"
